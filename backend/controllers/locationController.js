@@ -13,20 +13,29 @@ const createLocation = async (req, res) => {
 // Get all locations
 const getLocations = async (req, res) => {
     try {
-        const { state, category } = req.query;
+        const { state, category, page=1, limit=10 } = req.query;
 
         let filter = {};
 
         if (state) {
-            filter.state = state;
+            filter.state = new RegExp(state, 'i');  // case insensitive search
         }
 
         if (category) {
-            filter.category = category;
+            filter.category = new RegExp(category, 'i'); // case insensitive category search
         }
 
-        const locations = await Location.find(filter);
-        res.json(locations);
+        const skip = (page - 1) * limit;
+
+        const locations = await Location.find(filter).skip(skip).limit(Number(limit));
+        const total = await Location.countDocuments(filter)
+        res.json({
+            success: true,
+            total,
+            page: Number(page),
+            pages: Math.ceil(total / limit),
+            data: locations
+        });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

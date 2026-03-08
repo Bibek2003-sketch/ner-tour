@@ -11,6 +11,7 @@ app.use(express.json());
 
 app.use('/uploads', express.static('uploads'));
 app.use('/api/locations', require('./routes/locationRoutes'));
+app.use('/api/locations', require('./routes/reviewRoutes'));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

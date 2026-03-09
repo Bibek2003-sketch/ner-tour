@@ -139,12 +139,33 @@ const uploadImage = async (req, res) => {
     }
 }
 
+// get hidden gems
+const getHiddenGems = async (req, res) => {
+    try{
+        const locations = await Location.find({
+            rating: { $gte: 4 },
+            reviewCount: { $lt: 20 }
+        });
+        res.json({
+            success: true,
+            count: locations.length,
+            data: locations
+        });
+    }catch(error){
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+}
+
 module.exports = {
     createLocation,
     getLocations,
     getLocationById,
     updateLocation,
     deleteLocation,
-    uploadImage
+    uploadImage,
+    getHiddenGems
 };
 

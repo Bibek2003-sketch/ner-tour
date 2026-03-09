@@ -6,16 +6,22 @@ const {
     getLocationById,
     updateLocation,
     deleteLocation,
-    uploadImage
+    uploadImage,
+    getHiddenGems
 } = require('../controllers/locationController');
+const upload = require('../config/multer');
+
+router.get('/hidden-gems', getHiddenGems);
 
 router.post('/', createLocation);
 router.get('/', getLocations);
+
 router.get('/:id', getLocationById);
 router.put('/:id', updateLocation);
 router.delete('/:id', deleteLocation);
 
-const upload = require('../config/multer');
+
 router.post('/:id/images', upload.single('image'), uploadImage);
+
 
 module.exports = router;

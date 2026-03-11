@@ -13,6 +13,9 @@ app.use('/uploads', express.static('uploads'));
 app.use('/api/locations', require('./routes/locationRoutes'));
 app.use('/api/locations', require('./routes/reviewRoutes'));
 
+// authentication middlewares
+app.use('/api/auth', require('./routes/authRoutes'));
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
